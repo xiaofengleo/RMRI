@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSON into tree layout</title> <!-- http://bl.ocks.org/anotherjavadude/2964485 -->
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+    <style>
+
+    body {font-family: monospace; line-height: 160%; font-size: 18px; }
+
+    svg {     
+      font: 14px monospace;
+      fill       : #333;
+    }
+    .link {
+        fill: none;
+        stroke: #eee;
+        stroke-width: 1.5px;
+    }
+    button {border: 1px dotted #ccc; background: white; font-family: monospace; padding: 10px 20px; font-size: 18px; margin: 20px 10px 20px 0; color: red;}
+    button:focus { background-color:yellow; outline: none;}
+    nav {display: block; position: fixed; left: 10px; top: 10px; background: transparent; ;}
+  
+    </style>
+
+</head>
+
+<body>
+
+  <nav>
+    <button id="tree">Tree</button>
+    <button id="cluster">Cluster</button>
+  </nav>
+
+  <div id="viz"></div>
+
+  <script type="text/javascript">
+
+      //JSON object with the data
+
+
+var treeData = {"name" : "ROOT", "info" : "test", "children" : [
+{"name" : "ServiceObject","children" :[
+	{"name" : "AAAIService"},
+	{"name" : "AcquisitionService"},
+	{"name" : "AnnotationService"},
+	{"name" : "CatalogueService"},
+	{"name" : "CoordinationService"},
+	{"name" : "DataTransferService"},
+	{"name" : "PIDService"}
+]},
+{"name" : "CV_SimpleOperation", "children" :[
+	{"name" : "AcquireIdentifier"},
+  	{"name" : "AnnotateData"},
+  	{"name" : "AuthoriseAction"},
+  	{"name" : "CalibrateInstrument"},
+  	{"name" : "ConfigureController"},
+  	{"name" : "CoordinateProcess"},
+  	{"name" : "ExportMetadata"},
+  	{"name" : "PrepareDataTransfer"},
+  	{"name" : "ProcessRequest"},
+  	{"name" : "QueryData"},
+  	{"name" : "QueryResource"},
+  	{"name" : "RequestData"},
+  	{"name" : "ResolveIdentifier"},
+  	{"name" : "RetrieveData"},
+  	{"name" : "TranslateRequest"},
+  	{"name" : "UpdateCatalogue"},
+  	{"name" : "UpdateModel"},
+  	{"name" : "UpdateRecord"},
+  	{"name" : "UpdateRegistry"}
+]},
+{"name" : "CV_PersistentObject", "children":[
+ {"name" : "BackendObject"},
+ {"name" : "BrokerObject"},
+ {"name" : "ComponentObject"},
+ {"name" : "ExternalResource"},
+ {"name" : "PresentationObject"},
+ {"name" : "ServiceObject"}
+]},
+{"name" : "PersistentData", "children":[
+ {"name" : "BackupData"},
+ {"name" : "Citation"},
+ {"name" : "ConceptualModel"},
+ {"name" : "MeasurementResult"},
+ {"name" : "Metadata"},
+ {"name" : "MetadataCatalogue"},
+ {"name" : "UniqueIdentifier"}
+]},
+{"name" : "CV_ComplexOperation", "children" :[
+{"name" : "BrokeredDataExport"},
+ {"name" : "BrokeredDataImport"},
+ {"name" : "DataStaging"},
+ {"name" : "RawDataCollection"}
+]},
+{"name" : "Actor", "children" :[
+{"name" : "CapacityManager"},
+ {"name" : "DataCollector"},
+ {"name" : "DataConsumer"},
+ {"name" : "DataCurator"},
+ {"name" : "DataOriginator"},
+ {"name" : "DataProvider"},
+ {"name" : "DataPublisher"},
+ {"name" : "MeasurementModelDesigner"},
+ {"name" : "Measurer"},
+ {"name" : "MetadataHarvester"},
+ {"name" : "Observer"},
+ {"name" : "PIDManager"},
+ {"name" : "ProcessingEnvironmentPlanner"},
+ {"name" : "SemanticCurator"},
+ {"name" : "SemanticMediator"},
+ {"name" : "StorageAdministrator"},
+ {"name" : "Technician"},
+ {"name" : "User"}
+]},
+{"name" : "resource","children" :[
+{"name" : "CatalogueSystem"},
+ {"name" : "DataAcquisitionSystem"},
+ {"name" : "DataConsumer"},
+ {"name" : "DataCurationSystem"},
+ {"name" : "DataOriginator"},
+ {"name" : "DataProcessingSystem"},
+ {"name" : "DataProvider"},
+ {"name" : "DataPublishingSystem"},
+ {"name" : "DataRepository"},
+ {"name" : "DataUseSystem"},
+ {"name" : "PIDGenerator"},
+ {"name" : "ResearchInfrastructure"},
+ {"name" : "Sensor"},
+ {"name" : "SensorNetwork"},
+ {"name" : "Service"},
+ {"name" : "ServiceConsumer"},
+ {"name" : "ServiceProvider"},
+ {"name" : "ServiceRegistry"},
+ {"name" : "StorageSystem"}
+]},
+{"name" : "User","children" :[
+{"name" : "Citizen"},
+ {"name" : "CitizenScientist"},
+ {"name" : "Consultant"},
+ {"name" : "DecisionMaker"},
+ {"name" : "Educator"},
+ {"name" : "Engineer"},
+ {"name" : "Investor"},
+ {"name" : "Journalist"},
+ {"name" : "PolicyMaker"},
+ {"name" : "Researcher"},
+ {"name" : "Scientist"},
+ {"name" : "Technologist"},
+ {"name" : "Trainer"}
+]},
+{"name" : "CV_Thing","children" :[
+{"name" : "ComputationalCapability"}
+]},
+{"name" : "Metadata", "children" :[
+{"name" : "Concept"},
+ {"name" : "DataProvenance"},
+ {"name" : "MappingRule"},
+ {"name" : "QANotation"},
+ {"name" : "ServiceDescription"},
+ {"name" : "SpecificationOfInvestigationDesign"},
+ {"name" : "SpecificationOfMeasurementsOrObservations"}
+]},
+{"name" : "SV_Behaviour","children" :[ 
+ {"name" : "DataAcquisitionBehaviour"},
+ {"name" : "DataCurationBehaviour"},
+ {"name" : "DataProcessingBehaviour"},
+ {"name" : "DataPublishingBehaviour"},
+ {"name" : "DataUseBehaviour"}
+]},
+{"name" : "community","children" :[ 
+ {"name" : "DataAcquisitionCommunity"},
+ {"name" : "DataCurationCommunity"},
+ {"name" : "DataProcessingCommunity"},
+ {"name" : "DataPublishingCommunity"},
+ {"name" : "DataUseCommunity"}
+]},
+{"name" : "Service","children" :[ 
+ {"name" : "DataAnalysisService"},
+ {"name" : "DataAssimilationService"},
+ {"name" : "DataExtractionService"},
+ {"name" : "DataMiningService"},
+ {"name" : "ModellingAndSimulationService"},
+ {"name" : "WorkflowEnactmentService"}
+]},
+{"name" : "BrokerObject","children" :[ 
+ {"name" : "DataBroker"},
+ {"name" : "SemanticBroker"}
+]},
+{"name" : "DataTransporter","children" :[ 
+ {"name" : "DataExporter"},
+ {"name" : "DataImporter"},
+ {"name" : "DataStager"}
+]},
+{"name" : "IV_State","children":[
+ {"name" : "DataState"},
+ {"name" : "MetadataState"}
+]},
+{"name" : "ComponentObject","children":[ 
+ {"name" : "DataStoreController"},
+ {"name" : "InstrumentController"},
+ {"name" : "ProcessController"}
+]},
+{"name" : "CV_Operation","children":[ 
+ {"name" : "DataStreamOperation"}
+]},
+{"name" : "CV_BindingObject","children":[ 
+ {"name" : "DataTransporter"},
+ {"name" : "RawDataCollector"}
+]},
+{"name" : "StorageSystemBackend","children":[ 
+ {"name" : "DatabaseManagementSystemBackend"},
+ {"name" : "FileManagementSystemBackend"}
+]},
+{"name" : "DataStreamOperation","children":[ 
+ {"name" : "DeliverDataSet"},
+ {"name" : "DeliverRawData"},
+ {"name" : "ExportCuratedData"},
+ {"name" : "ImportDataForCuration"},
+ {"name" : "StageData"}
+]},
+{"name" : "Scientist","children":[ 
+ {"name" : "EnvironmentalScientist"}
+]},
+{"name" : "VirtualLaboratory","children":[ 
+ {"name" : "ExperimentalLaboratory"},
+ {"name" : "FieldLaboratory"},
+ {"name" : "SemanticLaboratory"}
+]},
+{"name" : "ConceptualModel","children":[ 
+ {"name" : "GlobalConceptualModel"},
+ {"name" : "LocalConceptualModel"}
+]},
+{"name" : "IV_Action","children":[ 
+ {"name" : "IV_AddMetadata"},
+ {"name" : "IV_AnnotateEntity"},
+ {"name" : "IV_AssignUniqueIdentifier"},
+ {"name" : "IV_BuildConceptualModel"},
+ {"name" : "IV_CarryOutBackup"},
+ {"name" : "IV_CheckQuality"},
+ {"name" : "IV_CiteData"},
+ {"name" : "IV_ConvertData"},
+ {"name" : "IV_DescribeService"},
+ {"name" : "IV_FinalReview"},
+ {"name" : "IV_PerformMapping"},
+ {"name" : "IV_PerformMeasurementOrObservation"},
+ {"name" : "IV_ProcessData"},
+ {"name" : "IV_ProduceModel"},
+ {"name" : "IV_PublishData"},
+ {"name" : "IV_PublishMetadata"},
+ {"name" : "IV_QueryEntity"},
+ {"name" : "IV_RegisterMetadata"},
+ {"name" : "IV_SetUpMappingRules"},
+ {"name" : "IV_SpecifyInvestigationDesign"},
+ {"name" : "IV_SpecifyMeasurementOrObservation"},
+ {"name" : "IV_StoreData"},
+ {"name" : "IV_TrackProvenance"},
+ {"name" : "IV_VisualiseData"}
+]},
+{"name" : "IV_AnnotateEntity","children":[ 
+ {"name" : "IV_AnnotateAction"},
+ {"name" : "IV_AnnotateData"},
+ {"name" : "IV_AnnotateMetadata"}
+]},
+{"name" : "IV_ProcessData","children":[ 
+ {"name" : "IV_DoDataMining"},
+ {"name" : "IV_QueryData"},
+ {"name" : "IV_QueryMetadata"},
+ {"name" : "IV_QueryProvenance"},
+ {"name" : "IV_ResolveAnnotation"}
+]},
+{"name" : "IV_QueryEntity","children":[ 
+ {"name" : "IV_QueryData"},
+ {"name" : "IV_QueryMetadata"},
+ {"name" : "IV_QueryProvenance"},
+ {"name" : "IV_ResolveAnnotation"}
+]},
+{"name" : "RM_Classifier","children":[
+ {"name" : "LifecyclePhase"}
+]},
+{"name" : "Concept","children":[ 
+ {"name" : "LocalConcept"}
+]},
+{"name" : "IV_Object","children":[ 
+ {"name" : "PersistentData"}
+]},
+{"name" : "DataUseBehaviour","children":[ 
+ {"name" : "SV_CoCreate"},
+ {"name" : "SV_Collaborate"},
+ {"name" : "SV_Contribute"},
+ {"name" : "SV_UserBehaviourTracking"},
+ {"name" : "SV_UserGroupWorkSupport"},
+ {"name" : "SV_UserProfileManagement"},
+ {"name" : "SV_UserWorkingRelationshipsManagement"},
+ {"name" : "SV_UserWorkingSpaceManagement"}
+]},
+{"name" : "DataProcessingBehaviour","children":[ 
+ {"name" : "SV_ComposeService"},
+ {"name" : "SV_CoordinateService"},
+ {"name" : "SV_CustomiseProcessingEnvironment"},
+ {"name" : "SV_DescribeService"},
+ {"name" : "SV_RegisterService"}
+]},
+{"name" : "DataCurationBehaviour","children":[ 
+ {"name" : "SV_DataAnnotation"},
+ {"name" : "SV_DataIdentification"},
+ {"name" : "SV_DataPreservation"},
+ {"name" : "SV_DataProductGeneration"},
+ {"name" : "SV_DataQualityChecking"},
+ {"name" : "SV_DataReplication"},
+ {"name" : "SV_SelectOrBuildConceptualModel"}
+]},
+{"name" : "DataPublishingBehaviour","children":[ 
+ {"name" : "SV_DataCitation"},
+ {"name" : "SV_DataDiscoveryAndAccess"},
+ {"name" : "SV_DataPublication"},
+ {"name" : "SV_MetadataHarvesting"},
+ {"name" : "SV_SemanticHarmonisation"}
+]},
+{"name" : "DataAcquisitionBehaviour","children":[ 
+ {"name" : "SV_DataCollection"},
+ {"name" : "SV_DesignExperiment"},
+ {"name" : "SV_DesignMeasurementModel"},
+ {"name" : "SV_InstrumentCalibration"},
+ {"name" : "SV_InstrumentConfiguration"}
+]},
+{"name" : "PresentationObject","children":[ 
+ {"name" : "ScienceGateway"},
+ {"name" : "VirtualLaboratory"}
+]},
+{"name" : "BackendObject","children":[
+ {"name" : "SensorBackend"},
+ {"name" : "SensorNetworkBackend"},
+ {"name" : "ServiceRegistryBackend"},
+ {"name" : "StorageSystemBackend"}
+]}
+]};
+
+
+
+//      var treeData = {"name" : "ROOT", "info" : "test", "children" : [
+//              {"name" : "A", "children" : [ 
+//                      {"name" : "A 01" }, 
+//                      {"name" : "A 02" }, 
+//                      {"name" : "A 03" }, 
+//                      {"name" : "A 04" }, 
+//                      {"name" : "A 05" }
+//                  ] }, 
+//              {"name" : "B", "children" : [ 
+//                      {"name" : "B 01" }, 
+//                      {"name" : "B 02", "children" : [ 
+//                              {"name" : "B 02.1" }, 
+//                              {"name" : "B 02.2" }, 
+//                              {"name" : "B 02.3" }, 
+//                              {"name" : "B 02.4" }
+//                          ]}, 
+//                      {"name" : "B 03" }, 
+//                      {"name" : "B 04" }, 
+//                      {"name" : "B 05" }] }, 
+//              {"name" : "C", "children": [
+//                      {"name" : "C 01", "children" :[
+//                              {"name" : "C 01.1" }, 
+//                              {"name" : "C 01.2" },
+//                              {"name" : "C 01.3" },
+//                              {"name" : "C 01.4" },
+//                              {"name" : "C 01.5" }
+//                          ]}] },
+//              {"name" : "D", "children" : [ 
+//                      {"name" : "D 01" }, 
+//                      {"name" : "D 02" }, 
+//                      {"name" : "D 03", "children" : [ 
+//                              {"name" : "D 03.1" }, 
+//                              {"name" : "D 03.2" }
+//                          ]},  
+//                      {"name" : "D 04" }
+//                  ] }
+//          ]};
+
+      // width and height
+      var w = 900;
+      var h = 500;
+
+      update(2);
+
+      d3.select("#tree")
+      .on("click", function(d,i) {
+          update(2)});
+      d3.select("#cluster")
+      .on("click", function(d,i) {
+          update(1)});
+
+
+      function update(type) {
+      
+          d3.select("svg")
+          .remove();
+
+          // Create a svg canvas
+          var vis = d3.select("#viz").append("svg:svg")
+          .attr("width", w)
+          .attr("height", h)
+          .append("svg:g")
+          .attr("transform", "translate(60, 0)"); 
+
+
+          if (type==1) 
+              var layout = d3.layout.cluster().size([h,w-100]);
+          else
+              var layout = d3.layout.tree().size([h,w-100]);
+
+          var diagonal = d3.svg.diagonal()
+          // change x and y (for the left to right tree)
+          .projection(function(d) { return [d.y, d.x]; });
+
+          // Preparing the data for the tree layout, convert data into an array of nodes
+          var nodes = layout.nodes(treeData);
+          // Create an array with all the links
+          var links = layout.links(nodes);
+
+          var link = vis.selectAll("pathlink")
+          .data(links)
+          .enter().append("svg:path")
+          .attr("class", "link")
+          .attr("d", diagonal)
+
+          var node = vis.selectAll("g.node")
+          .data(nodes)
+          .enter().append("svg:g")
+          .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+          // Add the dot at every node
+          node.append("svg:circle")
+          .attr("r", 1.5);
+
+          // place the name attribute left or right depending if children
+          node.append("svg:text")
+          .attr("dx", function(d) { return d.children ? -8 : 8; })
+          .attr("dy", 3)
+          .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
+          .text(function(d) { return d.name; });
+      }
+
+  </script>
+</body>
+</html>
+
