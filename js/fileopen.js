@@ -47,7 +47,7 @@
     function createPicker() {
       if (pickerApiLoaded && oauthToken) {
         var view = new google.picker.View(google.picker.ViewId.DOCS);
-        view.setMimeTypes("application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.google-apps.folder,application/vnd.google-apps.unknown,application/vnd.google-apps.file,.owl");
+        view.setMimeTypes("text/plain,application/vnd.google-apps.folder");
         var picker = new google.picker.PickerBuilder()
             .enableFeature(google.picker.Feature.NAV_HIDDEN)
             .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
@@ -62,10 +62,37 @@
       }
     }
 
+
+
+
     // A simple callback implementation.
     function pickerCallback(data) {
       if (data.action == google.picker.Action.PICKED) {
-        var fileId = data.docs[0].id;
-        alert('The user selected: ' + fileId);
-      }
-    }
+
+	var docs = data[google.picker.Response.DOCUMENTS];
+    docs.forEach(function (file) {
+		var fileid = file.id;
+	//alert(fileid);	
+		var downloadurl = 'https://www.googleapis.com/drive/v3/files/' + fileid +'?alt=media'; 
+		//https://www.googleapis.com/drive/v3/files/0ByZcl5tCaPn6Sk11UGYzNUFlcHM?alt=media
+		if (downloadurl) {
+    var accessToken = gapi.auth.getToken().access_token;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', downloadurl);
+    xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+    xhr.onload = function() {
+	document.getElementById("feature-text").innerHTML = xhr.responseText;// "Hello World";
+     // alert(xhr.responseText);
+		//callback(xhr.responseText);
+    };
+    xhr.onerror = function() {
+      //callback(null);
+    };
+    xhr.send();
+  } else {
+    //callback(null);
+  }
+	})
+	  }
+}
+				 
