@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>ENVRI Reference Model</title>
+		<link href="static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="static/css/wevi.css" rel="stylesheet"> <!-- higher precedence -->
+	</head>
+	<body>
+
+	<div class="container no-padding">
+		<h1>RMRI: Matching between Reference Model and Research Infrastructure</h1>
+   
+	  <div hidden class="alert alert-danger" id="error"></div>
+	  <div class="row">
+	    <div class="col-sm-4 no-padding">
+		    <div class="panel panel-default">
+				  <div class="panel-heading">Control Panel</div>
+				  <div class="panel-body">
+				    <div>
+				    	<p>Config:</p>
+				    	<textarea rows="4" id="config-text"></textarea>
+				    </div>
+				     <div>
+				    	<p>Training data (context|target):</p>
+				    	<textarea rows="4" id="input-text"></textarea>
+				    </div>
+				 
+				    <hr>
+				    <div>
+				    	<div class="btn-group">
+							  <button class="btn btn-success" id="btn-load">Load Document</button>
+							<button class="btn btn-success" id="btn-preprocess">Preprocess</button>
+							<button class="btn btn-success" id="btn-match">Match</button>
+						</div>
+				    </div>
+				  </div>
+				</div>
+	    </div> <!-- end of top left-panel -->
+	    <div class="col-sm-8 no-padding">
+		    <div class="panel panel-default">
+				  <div class="panel-heading">Reference Model Hierarchy</div>
+				  <div class="panel-body">
+				  	<div id="neuron-vis"></div>
+				  </div>
+				</div>
+	    </div>  <!-- end of top right-panel -->
+	  </div>  <!-- end of top row-->
+
+		<div class="row">
+			
+			<div class="col-sm-6 no-padding">
+		    <div class="panel panel-default">
+				  <div class="panel-heading">Features words go here:</div>
+					<div class="myBox">
+						<textarea rows="40" id="feature-text"></textarea>
+					</div>
+				  </div>
+		    </div>  <!-- end of lower left panel-->
+		
+			<div class="col-sm-6 no-padding">
+		    <div class="panel panel-default">
+				  <div class="panel-heading">Text after preprocessing:</div>
+					<div class="myBox">
+						<textarea rows="40" id="preprocessed-text"></textarea>
+					</div>
+				  </div>
+		    </div> 	<!-- end of lower-right panel-->
+			
+		</div>  <!-- end of bottom row -->
+	</div>  <!-- end of container -->
+
+	<script src="static/js/jquery-2.1.3.min.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/d3.v4.min.js"></script>
+	<script src="static/js/assert.js"></script>
+	<script src="static/js/pca.js"></script>
+	<script src="static/js/vector_math.js"></script>
+	<script src="/static/js/toyw2v.js"></script>
+	<script src="static/js/fileopen.js"></script>
+	<script src="static/js/preprocess.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
+
+	</body>
+</html>

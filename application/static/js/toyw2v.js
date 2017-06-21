@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 //  $("#btn-restart").click(updateAndRestartButtonClick);
   $("#btn-load").click(loadButtonClick);
-//  $("#btn-pca").click(updatePCAButtonClick);
+  $("#btn-preprocess").click(preProcess);
 //  $("#btn-next20").click(function(){batchTrain(20)});
 //  $("#btn-next100").click(function(){batchTrain(100)});
 //  $("#btn-next500").click(function(){batchTrain(500)});
@@ -251,7 +251,7 @@ var tree = d3.tree()
     .size([360, 500])
     .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
-d3.csv("RTreeData.csv", function(error, data) {
+d3.csv("static/RTreeData.csv", function(error, data) {
   if (error) throw error;
 
   var root = tree(stratify(data));
@@ -454,6 +454,12 @@ function loadButtonClick() {
 //<script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
 loadPicker();
 }
+
+function preProcess(){
+	
+	
+}
+
 
 
 
