@@ -2,7 +2,7 @@
     function preProcess() {
        datatosend = document.getElementById("feature-text").innerHTML;
         result = runPyScript(datatosend);
-        console.log('Got back ' + result);
+    //    console.log('Got back ' + result);
     }
 
 

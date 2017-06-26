@@ -4,6 +4,9 @@ from nltk.tokenize import RegexpTokenizer
 from stop_words import get_stop_words
 from nltk.stem.porter import PorterStemmer
 import simplejson as json
+import json
+import csv
+import sys
 
 app = Flask(__name__)
 
@@ -31,6 +34,55 @@ def pythonpreprocess():
         #return resp
         return json.dumps({'status':'OK','result':result});
 
+@app.route('/match',methods = ['POST'])
+def match():
+    markedRTreeData = open('markedRTreeData.csv','w')
+    matchcount = 0
+    if request.method == 'POST':
+
+        datafromjs = request.form['mydata']
+        #print(type(datafromjs),len(datafromjs),file=sys.stderr)
+
+        #jsonstr = json.dumps(datafromjs)
+        #print(type(jsonstr),len(jsonstr),file=sys.stderr)
+
+        jsonobj = json.loads(datafromjs)
+        #print(jsonobj, file=sys.stderr)
+        #print("\n doc length:\n ", len(jsonobj),type(jsonobj),file=sys.stderr)
+        with open('static/RTreeData.csv') as f:
+            reader = csv.DictReader(f)
+            rows = list(reader)
+        rmwordcount = len(rows)
+        doclen = len( jsonobj['result'][0] )
+        for key in range(0, doclen):
+            docword = jsonobj['result'][0][key]
+            for key2 in range(0, rmwordcount):
+                rmword = rows[key2]['id']
+                if docword in rmword:
+                    #print(docword)
+                    #print(rmword)
+                    #print("\n")
+                    rows[key2]['value'] = 'red'
+                    matchcount +=1
+                    #print(type(rows))
+                    #print('\n matchcount: ',matchcount, file=sys.stderr)
+        with open('static/markedRTreeData.csv','w') as csv_f:
+            csv_f.write('id,value')
+            csv_f.write('\n')
+            for line in rows:
+                print(line)
+                csv_f.write(line['id'])
+                csv_f.write(',')
+                csv_f.write(line['value'])
+                csv_f.write('\n')
+            #writer = csv.writer(csv_f,delimiter=',')
+            #writer.writerow('id,value')
+            #for line in rows:
+#                print(line)
+#                writer.writerow(line['id'],line['value'])
+    return json.dumps({'rmterms':rmwordcount,'docwords':doclen,'matchcount':matchcount});
+
+            
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -81,7 +133,7 @@ def clean(rawdata):
        stemmed_without_character = [i for i in stemmed_tokens if not (len(i)==1)]
        # print(stemmed_without_character)
        # add tokens to list
-       texts.append(stemmed_tokens)
+       texts.append(stemmed_without_character)
        return texts
 
 
