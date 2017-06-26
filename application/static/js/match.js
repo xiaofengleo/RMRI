@@ -24,6 +24,8 @@ alert(error);
 }
 })
 
+markred_rm_hierarchy_svg();
+
 return jqXHR.responseText;
 
 }
