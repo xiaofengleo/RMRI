@@ -64,6 +64,8 @@ def match():
                     #print("\n")
                     rows[key2]['value'] = 'red'
                     matchcount +=1
+                else:
+                    rows[key2]['value'] = 'black'
                     #print(type(rows))
                     #print('\n matchcount: ',matchcount, file=sys.stderr)
         with open('static/markedRTreeData.csv','w') as csv_f:
