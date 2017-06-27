@@ -36,7 +36,7 @@ def pythonpreprocess():
 
 @app.route('/match',methods = ['POST'])
 def match():
-    markedRTreeData = open('markedRTreeData.csv','w')
+    #markedRTreeData = open('markedRTree.csv','w')
     matchcount = 0
     if request.method == 'POST':
 
@@ -59,16 +59,19 @@ def match():
             for key2 in range(0, rmwordcount):
                 rmword = rows[key2]['id']
                 if docword in rmword:
-                    #print(docword)
-                    #print(rmword)
-                    #print("\n")
+                    print(docword)
+                    print(rmword)
+                    print("\n")
                     rows[key2]['value'] = 'red'
                     matchcount +=1
-                else:
-                    rows[key2]['value'] = 'black'
+                #else:
+                    #print("not in")
+                    #print(docword)
+                    #print(rmword)
+                    #rows[key2]['value'] = 'black'
                     #print(type(rows))
                     #print('\n matchcount: ',matchcount, file=sys.stderr)
-        with open('static/markedRTreeData.csv','w') as csv_f:
+        with open('static/markedRTree.csv','w') as csv_f:
             csv_f.write('id,value')
             csv_f.write('\n')
             for line in rows:
@@ -77,6 +80,7 @@ def match():
                 csv_f.write(',')
                 csv_f.write(line['value'])
                 csv_f.write('\n')
+            csv_f.close()
             #writer = csv.writer(csv_f,delimiter=',')
             #writer.writerow('id,value')
             #for line in rows:

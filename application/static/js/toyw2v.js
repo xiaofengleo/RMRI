@@ -130,7 +130,7 @@ var tree = d3.tree()
     .size([360, 500])
     .separation(function(a, b) { return (a.parent == b.parent ? 1 : 2) / a.depth; });
 
-d3.csv("static/markedRTreeData.csv", function(error, data) {
+d3.csv("static/markedRTree.csv", function(error, data) {
   if (error) throw error;
 
   var root = tree(stratify(data));
@@ -161,7 +161,7 @@ d3.csv("static/markedRTreeData.csv", function(error, data) {
       .attr("x", function(d) { return d.x < 180 === !d.children ? 6 : -6; })
       .style("text-anchor", function(d) { return d.x < 180 === !d.children ? "start" : "end"; })
       .attr("transform", function(d) { return "rotate(" + (d.x < 180 ? d.x - 90 : d.x + 90) + ")"; })
-      .attr("fill",function(d){ if (d.data.value.indexOf("red") !== -1) return "red";})
+      .attr("fill",function(d){ /*if (d.data.value.indexOf("red") !== -1) return "red"*/ return d.data.value;})
       .text(function(d) { return d.id.substring(d.id.lastIndexOf(".") + 1); });
 
 
