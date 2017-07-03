@@ -7,6 +7,8 @@ import simplejson as json
 import json
 import csv
 import sys
+import os
+from collections import defaultdict
 
 app = Flask(__name__)
 
@@ -54,6 +56,9 @@ def match():
             rows = list(reader)
         rmwordcount = len(rows)
         doclen = len( jsonobj['result'][0] )
+
+        masterdic = defaultdict(lambda:defaultdict(int))
+        masterdic2 = defaultdict(lambda:defaultdict(int))
         for key in range(0, doclen):
             docword = jsonobj['result'][0][key]
             for key2 in range(0, rmwordcount):
@@ -62,6 +67,8 @@ def match():
                     print(docword)
                     print(rmword)
                     print("\n")
+                    masterdic[docword][rmword] += 1
+                    masterdic2[rmword][docword] += 1
                     rows[key2]['value'] = 'red'
                     matchcount +=1
                 #else:
@@ -71,11 +78,12 @@ def match():
                     #rows[key2]['value'] = 'black'
                     #print(type(rows))
                     #print('\n matchcount: ',matchcount, file=sys.stderr)
+        print(masterdic)
         with open('static/markedRTree.csv','w') as csv_f:
             csv_f.write('id,value')
             csv_f.write('\n')
             for line in rows:
-                print(line)
+                #print(line)
                 csv_f.write(line['id'])
                 csv_f.write(',')
                 csv_f.write(line['value'])
@@ -86,7 +94,7 @@ def match():
             #for line in rows:
 #                print(line)
 #                writer.writerow(line['id'],line['value'])
-    return json.dumps({'rmterms':rmwordcount,'docwords':doclen,'matchcount':matchcount});
+    return json.dumps({'rmterms':rmwordcount,'docwords':doclen,'matchcount':matchcount,'dict1':masterdic,'dict2':masterdic2});
 
             
 @app.route('/signup')
@@ -144,4 +152,8 @@ def clean(rawdata):
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    port = int(os.environ.get('PORT',5000))
+    if port == 5000:
+        app.debug = True
+    
+    app.run(host = '0.0.0.0',port = 5000)

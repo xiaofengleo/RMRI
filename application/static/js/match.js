@@ -17,7 +17,9 @@ cache:false,
 data:{mydata:input},
 async:true,
 success:function(data){
-	document.getElementById("statistics").innerHTML = data; 
+	obj =JSON.parse(data);
+	document.getElementById("statistics").innerHTML = JSON.stringify(obj.dict1); 
+	document.getElementById("statistics2").innerHTML = JSON.stringify(obj.dict2); 
 },
 error:function(request,status,error){
 alert(error);

@@ -28,8 +28,8 @@ function project(x, y) {
 
 function setup_rm_hierarchy_svg() {
 	
-  nn_svg_width = 1400;  // view box, not physical
-  nn_svg_height = 1000;  // W/H ratio should match padding-bottom in wevi.css
+  nn_svg_width = 2000;  // view box, not physical
+  nn_svg_height = 1400;  // W/H ratio should match padding-bottom in wevi.css
   d3.select('div#neuron-vis > *').remove();
   nn_svg = d3.select('div#neuron-vis')
    .append("div")
@@ -104,8 +104,8 @@ function project(x, y) {
 
 function markred_rm_hierarchy_svg() {
 	
-  nn_svg_width = 1400;  // view box, not physical
-  nn_svg_height = 1000;  // W/H ratio should match padding-bottom in wevi.css
+  nn_svg_width = 2000;  // view box, not physical
+  nn_svg_height = 1400;  // W/H ratio should match padding-bottom in wevi.css
   d3.select('div#neuron-vis > *').remove();
   nn_svg = d3.select('div#neuron-vis')
    .append("div")
