@@ -13,31 +13,8 @@
    
 	  <div hidden class="alert alert-danger" id="error"></div>
 	  <div class="row">
-	    <div class="col-sm-4 no-padding">
-		    <div class="panel panel-default">
-				  <div class="panel-heading">Control Panel</div>
-				  <div class="panel-body">
-				    <div>
-				    	<p>Statistis:</p>
-				    	<textarea rows="4" id="statistics"></textarea>
-				    </div>
-				     <div>
-				    	<!-- <p>Training data (context|target):</p> -->
-				    	<!-- <textarea rows="4" id="input-text"></textarea> -->
-				    </div>
-				 
-				    <hr>
-				    <div>
-				    	<div class="btn-group">
-							  <button class="btn btn-success" id="btn-load">Load Document</button>
-							<button class="btn btn-success" id="btn-preprocess">Preprocess</button>
-							<button class="btn btn-success" id="btn-match">Match</button>
-						</div>
-				    </div>
-				  </div>
-				</div>
-	    </div> <!-- end of top left-panel -->
-	    <div class="col-sm-8 no-padding">
+
+	    <div class="col-sm-12 no-padding">
 		    <div class="panel panel-default">
 				  <div class="panel-heading">Reference Model Hierarchy</div>
 				  <div class="panel-body">
@@ -47,6 +24,46 @@
 	    </div>  <!-- end of top right-panel -->
 	  </div>  <!-- end of top row-->
 
+		<hr>
+				    <div>
+				    	<div class="btn-group">
+							  <button class="btn btn-success" id="btn-load">Load Document</button>
+							<button class="btn btn-success" id="btn-preprocess">Preprocess</button>
+							<button class="btn btn-success" id="btn-match">Match</button>
+						</div>
+				    </div>
+		<hr>
+		
+		<div class="row">
+	    <div class="col-sm-6 no-padding">
+		    <div class="panel panel-default">
+				  <div class="panel-heading">RI Terms vs RM Concepts</div>
+				  <div class="panel-body">
+				   
+					  <div>
+				    	
+				    	<textarea rows="20" id="statistics"></textarea>
+				     </div>
+		  
+				  </div>
+				</div>
+	    </div> <!-- end of left-panel -->
+			
+			<div class="col-sm-6 no-padding">
+		    <div class="panel panel-default">
+				  <div class="panel-heading">RM Concepts vs RI Terms </div>
+				  <div class="panel-body">
+				 
+				     <div>
+				    	
+				    	<textarea rows="20" id="statistics2"></textarea>
+				    </div>
+				  </div>
+				</div>
+	    </div> <!-- end of right-panel -->
+		</div>  <!-- end of middle row-->
+		
+				
 		<div class="row">
 			
 			<div class="col-sm-6 no-padding">
