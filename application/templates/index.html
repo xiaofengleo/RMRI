@@ -28,7 +28,7 @@
 				    <div>
 				    	<div class="btn-group">
 							  <button class="btn btn-success" id="btn-load">Load Document</button>
-							<button class="btn btn-success" id="btn-preprocess">Preprocess</button>
+							<button class="btn btn-success" id="btn-extracttopics">Extract Topics</button>
 							<button class="btn btn-success" id="btn-match">Match</button>
 						</div>
 				    </div>
@@ -37,7 +37,7 @@
 		<div class="row">
 	    <div class="col-sm-6 no-padding">
 		    <div class="panel panel-default">
-				  <div class="panel-heading">RI Terms vs RM Concepts</div>
+				  <div class="panel-heading">RI Topics vs RM Concepts</div>
 				  <div class="panel-body">
 				   
 					  <div>
@@ -51,7 +51,7 @@
 			
 			<div class="col-sm-6 no-padding">
 		    <div class="panel panel-default">
-				  <div class="panel-heading">RM Concepts vs RI Terms </div>
+				  <div class="panel-heading">RM Concepts vs RI Topics </div>
 				  <div class="panel-body">
 				 
 				     <div>
@@ -68,7 +68,7 @@
 			
 			<div class="col-sm-6 no-padding">
 		    <div class="panel panel-default">
-				  <div class="panel-heading">Features words go here:</div>
+				  <div class="panel-heading">Document:</div>
 					<div class="myBox">
 						<textarea rows="40" id="feature-text"></textarea>
 					</div>
@@ -77,7 +77,7 @@
 		
 			<div class="col-sm-6 no-padding">
 		    <div class="panel panel-default">
-				  <div class="panel-heading">Text after preprocessing:</div>
+				  <div class="panel-heading">Topics:</div>
 					<div class="myBox">
 						<textarea rows="40" id="preprocessed-text"></textarea>
 					</div>
@@ -97,6 +97,8 @@
 	<script src="static/js/fileopen.js"></script>
 	<script src="static/js/preprocess.js"></script>
 	<script src="static/js/match.js"></script>
+	<script src="static/js/matchv2.js"></script>
+	<script src="static/js/extracttopic.js"></script>
 <script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
 
 	</body>

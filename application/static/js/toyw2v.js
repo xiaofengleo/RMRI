@@ -3,8 +3,10 @@ $(document).ready(function() {
   init();
 
   $("#btn-load").click(loadButtonClick);
-  $("#btn-preprocess").click(preProcess);
-  $("#btn-match").click(match);
+//  $("#btn-preprocess").click(preProcess);
+  $("#btn-extracttopics").click(extracttopic);
+  //$("#btn-match").click(match);
+  $("#btn-match").click(matchv2);
 });
 
 function init() {
